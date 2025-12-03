@@ -1,0 +1,46 @@
+Dada una lista, determinar que los elementos en la misma siguen un orden creciente:
+
+ f.xs = V i : 1 <= i < #xs : xs.(i - 1) <= xs.i
+ 
+
+Caso base (lista vacía)
+
+f.[]
+{definición f}
+(V i : 1 <= i < #[] : [].(i - 1) <= [].i)
+{definición #}
+(V i : 1 <= i < 0 : [].(i - 1) <= [].i)
+{rango vacío}
+True
+
+Caso base (lista unitaria)
+
+f.[x]
+{definición f}
+(V i : 1 <= i < #[x] : [x].(i - 1) <= [x].i)
+{definición #}
+(V i : 1 <= i < 1 : [x].(i - 1) <= [x].i)
+{rango vacío}
+True
+
+Caso inductivo (lista con al menos dos elementos)
+
+f.(x:(y:xs))
+{definición f}
+(V i : 1 <= i < #(x:(y:xs)) : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i)
+{definición #}
+(V i : 1 <= i < #(y:xs) + 1 : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i)
+{partición de rango}
+(V i : 1 <= i < 2 : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i) ^ (V i : 1 <= i < #(y:xs) + 1 : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i)
+{rango unitario}
+(x:(y:xs)).(1 - 1) <= (x:(y:xs)).1 ^ (V i : 1 <= i < #(y:xs) + 1 : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i)
+{aritmética, definición .}
+x <= y ^ (V i : 1 <= i < #(y:xs) + 1 : (x:(y:xs)).(i - 1) <= (x:(y:xs)).i)
+{reemplazo i = i + 1}
+x <= y ^ (V i : 1 <= i + 1 < #(y:xs) + 1 : (x:(y:xs)).(i + 1 - 1) <= (x:(y:xs)).(i + 1))
+{arimética}
+x <= y ^ (V i : 1 <= i < #(y:xs) : (x:(y:xs)).i <= (x:(y:xs)).(i + 1))
+{definición .}
+x <= y ^ (V i : 1 <= i < #(y:xs) : (y:xs).(i - 1) <= (y:xs).i)
+{hipotesis inductiva}
+x <= y ^ f.(y:xs)

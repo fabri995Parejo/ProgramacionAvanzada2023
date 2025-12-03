@@ -1,0 +1,33 @@
+Ejercicio 8. Sea m : [Num] → Num una función que devuelve el mínimo de una lista dada. Especificar y derivar m.
+
+min.xs = Min i : 0 <= i < #xs : xs.i
+
+Caso Base (lista vacía)
+
+min.[]
+{definición función}
+Min i : 0 <= i < #[] : xs.i
+{definición #, rango vacío por i >= 0 ^ i < 0 es falso}
+Inf+
+
+Caso inductivo
+
+min.(x:xs)
+{definición función}
+Min i : 0 <= i < #(x:xs) : (x:xs).i
+{definición #}
+Min i : 0 <= i < #xs + 1 : (x:xs).i
+{separación de término}
+Min i : 0 <= i < 1 : (x:xs).i min Min i : 1 <= i < #xs + 1 : (x:xs).i
+{rango unitario}
+(x:xs).0 min Min i : 1 <= i < #xs + 1 : (x:xs).i
+{definición punto}
+x min Min i : 1 <= i < #xs + 1 : (x:xs).i
+{reemplazo i = i + 1}
+x min Min i : 1 <= i + 1 < #xs + 1 : (x:xs).(i + 1)
+{arimética}
+x min Min i : 0 <= i < #xs : (x:xs).(i + 1)
+{definición punto}
+x min Min i : 0 <= i < #xs : xs.i
+{hipótesis inductiva}
+x min min.xs
